@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glass Synth Piano</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/tone@14.7.77/build/Tone.js"></script>
+</head>
+<body>
+  <div id="startOverlay" class="overlay">
+    <div class="glass-card overlay-card">
+      <h1>Glass Synth Piano</h1>
+      <p>Tap to initialize audio and start playing.</p>
+      <button id="startButton" class="btn primary">Click to Start</button>
+    </div>
+  </div>
+
+  <main class="app-shell">
+    <section class="glass-card controls">
+      <div class="control-group">
+        <label for="presetSelect">Instrument</label>
+        <select id="presetSelect" class="glass-input"></select>
+      </div>
+
+      <div class="control-group">
+        <span>Input Mode</span>
+        <div class="toggle-row" id="inputModeToggle">
+          <button class="toggle-btn active" data-mode="touch">Touch/Mouse</button>
+          <button class="toggle-btn" data-mode="hardware">Hardware Keyboard</button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <span>Visual Feedback</span>
+        <div class="toggle-row" id="visualModeToggle">
+          <button class="toggle-btn active" data-visual="color">Color Change</button>
+          <button class="toggle-btn" data-visual="depress">Depress</button>
+        </div>
+      </div>
+
+      <div class="control-group record-controls">
+        <button id="recordBtn" class="btn">Record</button>
+        <button id="stopBtn" class="btn" disabled>Stop/Download</button>
+      </div>
+    </section>
+
+    <section class="glass-card piano-panel">
+      <div id="ribbon" class="ribbon" aria-label="Octave navigation" tabindex="0">
+        <span class="arrow" aria-hidden="true">&#10094;</span>
+        <span id="rangeLabel">Current: C2 - B2</span>
+        <span class="arrow" aria-hidden="true">&#10095;</span>
+      </div>
+
+      <div class="piano-viewport" id="pianoViewport">
+        <div class="piano-keys" id="pianoKeys"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

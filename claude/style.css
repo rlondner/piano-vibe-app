@@ -1,0 +1,376 @@
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  color: #fff;
+}
+
+body {
+  background: linear-gradient(135deg, #1a0533 0%, #0d1b3e 40%, #0a2647 70%, #071e3d 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ---------- Start Overlay ---------- */
+#start-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(10, 5, 30, 0.92);
+  backdrop-filter: blur(20px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.5s;
+}
+
+#start-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.start-content {
+  text-align: center;
+}
+
+.start-content h1 {
+  font-size: 2.8rem;
+  font-weight: 300;
+  letter-spacing: 0.3em;
+  margin-bottom: 0.3em;
+  text-transform: uppercase;
+}
+
+.start-content p {
+  font-size: 1rem;
+  opacity: 0.6;
+  margin-bottom: 2em;
+  letter-spacing: 0.1em;
+}
+
+#start-btn {
+  padding: 14px 48px;
+  font-size: 1.1rem;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: background 0.3s, transform 0.15s;
+  letter-spacing: 0.08em;
+}
+
+#start-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.04);
+}
+
+/* ---------- Glass Mixin ---------- */
+.glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+/* ---------- Controls ---------- */
+#controls {
+  width: 95%;
+  max-width: 1100px;
+  margin-top: 16px;
+  padding: 14px 20px;
+  border-radius: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.control-group label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  opacity: 0.55;
+}
+
+#instrument-select {
+  padding: 7px 14px;
+  font-size: 0.85rem;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  backdrop-filter: blur(6px);
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  min-width: 180px;
+  text-align: center;
+}
+
+#instrument-select option {
+  background: #1a1a3e;
+  color: #fff;
+}
+
+.toggle-wrapper {
+  display: flex;
+  gap: 4px;
+}
+
+.toggle-btn {
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s;
+  letter-spacing: 0.04em;
+}
+
+.toggle-btn.active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.toggle-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+#record-btn.recording {
+  color: #ff4466;
+  border-color: rgba(255, 68, 102, 0.5);
+  background: rgba(255, 68, 102, 0.15);
+  animation: pulse-rec 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse-rec {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 68, 102, 0.3); }
+  50% { box-shadow: 0 0 12px 4px rgba(255, 68, 102, 0.15); }
+}
+
+/* ---------- Piano Container ---------- */
+#piano-container {
+  width: 95%;
+  max-width: 1100px;
+  margin-top: 20px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.35);
+}
+
+/* ---------- Ribbon ---------- */
+#ribbon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  user-select: none;
+  touch-action: pan-x;
+  cursor: grab;
+}
+
+#ribbon:active { cursor: grabbing; }
+
+#ribbon-label {
+  font-size: 0.95rem;
+  letter-spacing: 0.15em;
+  font-weight: 300;
+  min-width: 130px;
+  text-align: center;
+}
+
+.ribbon-arrow {
+  font-size: 0.85rem;
+  opacity: 0.45;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: opacity 0.2s;
+}
+
+.ribbon-arrow:hover { opacity: 0.9; }
+
+/* ---------- Piano Viewport ---------- */
+#piano-viewport {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+#piano-keys {
+  display: flex;
+  position: relative;
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ---------- Keys ---------- */
+.octave-group {
+  display: flex;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.key {
+  position: relative;
+  flex-shrink: 0;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: background 0.1s, transform 0.1s, box-shadow 0.1s;
+}
+
+.key-white {
+  width: calc(100% / 7);
+  height: 220px;
+  background: linear-gradient(180deg, #f8f8f8 0%, #e8e8e8 85%, #d0d0d0 100%);
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 3px solid #bbb;
+  border-radius: 0 0 6px 6px;
+  z-index: 1;
+}
+
+.key-white:last-child {
+  border-right: none;
+}
+
+.key-black {
+  position: absolute;
+  width: calc(100% / 7 * 0.58);
+  height: 140px;
+  background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 70%, #111 100%);
+  border-radius: 0 0 5px 5px;
+  z-index: 2;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Key label */
+.key-label {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.6rem;
+  opacity: 0.35;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.key-black .key-label {
+  color: #aaa;
+  font-size: 0.5rem;
+  bottom: 8px;
+}
+
+/* Keyboard shortcut hints */
+.key-hint {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.65rem;
+  opacity: 0;
+  pointer-events: none;
+  background: rgba(100, 100, 255, 0.3);
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+}
+
+.key-black .key-hint {
+  color: #ddd;
+  top: 6px;
+  font-size: 0.55rem;
+}
+
+body.keyboard-mode .first-octave .key-hint,
+body.keyboard-mode .second-octave .key-hint {
+  opacity: 0.7;
+}
+
+/* ---------- Visual Feedback: Color Change ---------- */
+body.feedback-color .key-white.active {
+  background: linear-gradient(180deg, #7c9fff 0%, #5b7de8 85%, #4a6ad4 100%);
+}
+
+body.feedback-color .key-black.active {
+  background: linear-gradient(180deg, #5566cc 0%, #3344aa 70%, #2233aa 100%);
+}
+
+/* ---------- Visual Feedback: Depress ---------- */
+body.feedback-depress .key-white.active {
+  transform: scaleY(0.98);
+  transform-origin: top;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.15);
+  border-bottom-width: 1px;
+  background: linear-gradient(180deg, #e8e8e8 0%, #ddd 85%, #ccc 100%);
+}
+
+body.feedback-depress .key-black.active {
+  transform: scaleY(0.96);
+  transform-origin: top;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), inset 0 -1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* ---------- Responsive ---------- */
+
+/* Portrait / narrow: 1 octave */
+@media (max-width: 600px) {
+  .key-white { height: 200px; }
+  .key-black { height: 125px; }
+
+  #controls {
+    gap: 10px;
+    padding: 10px 12px;
+  }
+
+  .control-group label { font-size: 0.6rem; }
+  .toggle-btn { padding: 5px 10px; font-size: 0.7rem; }
+  #instrument-select { min-width: 140px; font-size: 0.75rem; }
+}
+
+/* Landscape / wider: 2 octaves */
+@media (min-width: 601px) {
+  .key-white { height: 240px; }
+  .key-black { height: 150px; }
+}
+
+@media (min-width: 900px) {
+  .key-white { height: 260px; }
+  .key-black { height: 160px; }
+}

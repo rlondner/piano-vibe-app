@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Glass Piano</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Autoplay Policy Overlay -->
+  <div id="start-overlay">
+    <div class="start-content">
+      <h1>Glass Piano</h1>
+      <p>5-Octave Polyphonic Synthesizer</p>
+      <button id="start-btn">Click to Start</button>
+    </div>
+  </div>
+
+  <!-- Top Controls -->
+  <div id="controls">
+    <div class="control-group">
+      <label for="instrument-select">Instrument</label>
+      <select id="instrument-select">
+        <option value="fender-rhodes">Fender Rhodes</option>
+        <option value="wurlitzer">Wurlitzer Electronic Piano</option>
+        <option value="cp70">Yamaha CP-70</option>
+        <option value="cp80">Yamaha CP-80</option>
+        <option value="clavinet">Hohner Clavinet</option>
+        <option value="pianet">Hohner Pianet</option>
+        <option value="juno106">Juno 106</option>
+        <option value="rmi-electra">RMI Electra-piano</option>
+        <option value="dx7-organ">Yamaha DX7 Organ</option>
+        <option value="nord-grand">Clavia Nord Stage 4 Grand Piano</option>
+      </select>
+    </div>
+
+    <div class="control-group">
+      <label>Input Mode</label>
+      <div class="toggle-wrapper">
+        <button class="toggle-btn active" data-mode="keyboard">Keyboard</button>
+        <button class="toggle-btn" data-mode="touch">Touch/Mouse</button>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label>Visual Feedback</label>
+      <div class="toggle-wrapper">
+        <button class="toggle-btn" data-feedback="depress">Depress</button>
+        <button class="toggle-btn active" data-feedback="color">Color Change</button>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label>Recording</label>
+      <div class="toggle-wrapper">
+        <button class="toggle-btn" id="record-btn">Record</button>
+        <button class="toggle-btn" id="stop-btn" disabled>Stop &amp; Download</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Piano Container -->
+  <div id="piano-container">
+    <!-- Swipeable Ribbon -->
+    <div id="ribbon">
+      <span class="ribbon-arrow" id="ribbon-left">&#9664;</span>
+      <span id="ribbon-label">C3 - B3</span>
+      <span class="ribbon-arrow" id="ribbon-right">&#9654;</span>
+    </div>
+
+    <!-- Keys -->
+    <div id="piano-viewport">
+      <div id="piano-keys"></div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

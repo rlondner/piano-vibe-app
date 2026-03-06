@@ -1,0 +1,268 @@
+:root {
+  --bg-grad: linear-gradient(135deg, #220a45, #0d1c50 50%, #09263f);
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.2);
+  --glass-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+  --text: #eef2ff;
+  --white-key: #f8f9ff;
+  --black-key: #161724;
+  --active-color: #7ee0ff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text);
+}
+
+body {
+  background: var(--bg-grad);
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.app-shell {
+  width: min(1200px, 100%);
+  padding: 20px;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 16px;
+}
+
+.glass-card {
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: var(--glass-shadow);
+  border-radius: 16px;
+}
+
+.controls {
+  padding: 14px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+label,
+span {
+  font-size: 0.9rem;
+}
+
+.glass-input {
+  appearance: none;
+  border: var(--glass-border);
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 10px;
+  outline: none;
+}
+
+.glass-input option {
+  color: #101324;
+}
+
+.toggle-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.toggle-btn,
+.btn {
+  border: var(--glass-border);
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.toggle-btn.active,
+.btn.primary {
+  background: rgba(126, 224, 255, 0.35);
+}
+
+.toggle-btn:disabled,
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.record-controls {
+  justify-content: flex-end;
+}
+
+.piano-panel {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  gap: 10px;
+}
+
+.ribbon {
+  position: relative;
+  user-select: none;
+  touch-action: pan-y;
+  text-align: center;
+  padding: 10px 42px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: var(--glass-border);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: grab;
+}
+
+.ribbon:active {
+  cursor: grabbing;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.75;
+  font-size: 1.1rem;
+}
+
+.arrow:first-child {
+  left: 14px;
+}
+
+.arrow:last-child {
+  right: 14px;
+}
+
+.piano-viewport {
+  overflow: hidden;
+  border-radius: 12px;
+  padding: 12px;
+  border: var(--glass-border);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.piano-keys {
+  position: relative;
+  width: 100%;
+  height: 270px;
+}
+
+.white-keys {
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(var(--white-key-count), 1fr);
+  gap: 2px;
+}
+
+.white-key,
+.black-key {
+  border-radius: 0 0 10px 10px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.white-key {
+  background: var(--white-key);
+  box-shadow: inset 0 -8px 10px rgba(0, 0, 0, 0.16);
+}
+
+.black-key-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.black-key {
+  position: absolute;
+  width: calc(100% / var(--white-key-count) * 0.65);
+  height: 60%;
+  background: var(--black-key);
+  border-color: rgba(255, 255, 255, 0.15);
+  border-radius: 0 0 8px 8px;
+  box-shadow: inset 0 -6px 10px rgba(255, 255, 255, 0.08);
+  transform: translateX(-50%);
+  pointer-events: auto;
+}
+
+.key {
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.08s ease, background-color 0.12s ease;
+}
+
+.piano-keys.pointer-locked .key {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.key.active.color.white-key {
+  background: var(--active-color);
+}
+
+.key.active.color.black-key {
+  background: #2cc8ff;
+}
+
+.key.active.depress {
+  transform: translateY(4px);
+  box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(5, 10, 20, 0.65);
+  z-index: 20;
+}
+
+.overlay.hidden {
+  display: none;
+}
+
+.overlay-card {
+  padding: 24px;
+  text-align: center;
+  width: min(380px, 90vw);
+}
+
+.overlay-card h1 {
+  margin: 0 0 12px;
+}
+
+.overlay-card p {
+  margin: 0 0 16px;
+  opacity: 0.9;
+}
+
+@media (max-width: 900px) {
+  .piano-keys {
+    height: 235px;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-shell {
+    padding: 12px;
+  }
+
+  .piano-keys {
+    height: 210px;
+  }
+}

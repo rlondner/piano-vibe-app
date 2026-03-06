@@ -1,0 +1,718 @@
+/* ========================================
+   Glass Piano - CSS Styles
+   Glassmorphism Aesthetic
+   ======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Glassmorphism Variables */
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    --backdrop-blur: blur(10px);
+
+    /* Colors */
+    --white-key: rgba(255, 255, 255, 0.9);
+    --white-key-active: rgba(255, 215, 0, 0.9);
+    --black-key: rgba(30, 30, 40, 0.95);
+    --black-key-active: rgba(255, 100, 150, 0.95);
+    --accent-color: rgba(255, 100, 150, 0.8);
+    --recording-color: rgba(255, 50, 50, 0.9);
+
+    /* Key Dimensions */
+    --white-key-width: 60px;
+    --white-key-height: 220px;
+    --black-key-width: 36px;
+    --black-key-height: 140px;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a0a2e 0%, #16213e 25%, #0f3460 50%, #1a1a4e 75%, #16213e 100%);
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Animated background gradient */
+body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        rgba(102, 51, 153, 0.3),
+        rgba(0, 102, 204, 0.3),
+        rgba(51, 0, 102, 0.3),
+        rgba(0, 51, 102, 0.3)
+    );
+    animation: gradientShift 15s ease infinite;
+    z-index: -1;
+}
+
+@keyframes gradientShift {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(2%, 2%) rotate(1deg); }
+    50% { transform: translate(-1%, 3%) rotate(-1deg); }
+    75% { transform: translate(3%, -2%) rotate(0.5deg); }
+}
+
+/* ========================================
+   Glass Panel Base Class
+   ======================================== */
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: var(--glass-shadow);
+}
+
+/* ========================================
+   Glass Button
+   ======================================== */
+.glass-button {
+    background: var(--glass-bg);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 12px 24px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.glass-button:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+.glass-button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.glass-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ========================================
+   Overlay (Start Screen)
+   ======================================== */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: opacity 0.5s ease;
+}
+
+.overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.overlay-content {
+    padding: 60px 80px;
+    text-align: center;
+}
+
+.overlay-content h1 {
+    font-size: 48px;
+    color: #ffffff;
+    margin-bottom: 16px;
+    text-shadow: 0 4px 20px rgba(255, 255, 255, 0.3);
+}
+
+.overlay-content p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 18px;
+    margin-bottom: 32px;
+}
+
+/* ========================================
+   App Container
+   ======================================== */
+#app-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 24px;
+    width: 100%;
+    max-width: 1400px;
+    transition: opacity 0.5s ease;
+}
+
+#app-container.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* ========================================
+   Controls Header
+   ======================================== */
+.controls-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    padding: 20px 32px;
+    width: 100%;
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.control-group label {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* ========================================
+   Glass Select Dropdown
+   ======================================== */
+.glass-select {
+    background: var(--glass-bg);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 10px 16px;
+    color: #ffffff;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+    min-width: 200px;
+    transition: all 0.3s ease;
+}
+
+.glass-select:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.glass-select:focus {
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.glass-select option {
+    background: #1a0a2e;
+    color: #ffffff;
+}
+
+/* ========================================
+   Toggle Switch
+   ======================================== */
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.toggle-label {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 50px;
+    height: 26px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--glass-border);
+    border-radius: 26px;
+    transition: all 0.3s ease;
+}
+
+.toggle-slider::before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 2px;
+    bottom: 2px;
+    background: #ffffff;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.toggle-switch input:checked + .toggle-slider {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.toggle-switch input:checked + .toggle-slider::before {
+    transform: translateX(24px);
+}
+
+/* ========================================
+   Recording Controls
+   ======================================== */
+.recording-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 24px;
+}
+
+.record-btn.recording {
+    background: var(--recording-color);
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 50, 50, 0.7); }
+    50% { box-shadow: 0 0 0 15px rgba(255, 50, 50, 0); }
+}
+
+.record-icon, .download-icon {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.record-icon {
+    background: #ff4444;
+}
+
+.download-icon {
+    background: #44ff88;
+}
+
+.recording-status {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 13px;
+    min-width: 100px;
+    text-align: center;
+}
+
+/* ========================================
+   Octave Ribbon
+   ======================================== */
+.octave-ribbon-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    width: 100%;
+    max-width: 500px;
+    user-select: none;
+}
+
+.ribbon-indicator {
+    color: rgba(255, 255, 255, 0.5);
+    transition: color 0.3s ease;
+}
+
+.ribbon-indicator:hover {
+    color: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+}
+
+.octave-ribbon {
+    flex: 1;
+    text-align: center;
+    padding: 8px 16px;
+    cursor: grab;
+    transition: all 0.3s ease;
+}
+
+.octave-ribbon:active {
+    cursor: grabbing;
+}
+
+.octave-ribbon.swiping {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+}
+
+#current-octave-display {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+/* ========================================
+   Piano Wrapper & Container
+   ======================================== */
+.piano-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 20px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--glass-border) transparent;
+}
+
+.piano-wrapper::-webkit-scrollbar {
+    height: 8px;
+}
+
+.piano-wrapper::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 4px;
+}
+
+.piano-wrapper::-webkit-scrollbar-thumb {
+    background: var(--glass-border);
+    border-radius: 4px;
+}
+
+.piano-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 20px;
+    min-width: max-content;
+    transition: transform 0.3s ease;
+}
+
+/* ========================================
+   Piano Keys
+   ======================================== */
+.key {
+    position: relative;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* White Keys */
+.white-key {
+    width: var(--white-key-width);
+    height: var(--white-key-height);
+    background: linear-gradient(
+        180deg,
+        var(--white-key) 0%,
+        rgba(240, 240, 250, 0.95) 100%
+    );
+    border: 1px solid rgba(200, 200, 220, 0.5);
+    border-radius: 0 0 8px 8px;
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.3),
+        inset 0 -4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+.white-key::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 60%;
+    background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.8) 0%,
+        transparent 100%
+    );
+    border-radius: 4px;
+    pointer-events: none;
+}
+
+.white-key.active-depress {
+    transform: translateY(4px) scale(0.98);
+    box-shadow:
+        0 1px 5px rgba(0, 0, 0, 0.4),
+        inset 0 2px 10px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(
+        180deg,
+        var(--white-key-active) 0%,
+        rgba(255, 200, 0, 0.9) 100%
+    );
+}
+
+.white-key.active-color {
+    background: linear-gradient(
+        180deg,
+        var(--white-key-active) 0%,
+        rgba(255, 180, 0, 0.95) 100%
+    );
+    box-shadow:
+        0 4px 20px rgba(255, 200, 0, 0.5),
+        inset 0 -4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Black Keys */
+.black-key {
+    width: var(--black-key-width);
+    height: var(--black-key-height);
+    background: linear-gradient(
+        180deg,
+        var(--black-key) 0%,
+        rgba(20, 20, 30, 0.95) 100%
+    );
+    border: 1px solid rgba(60, 60, 80, 0.5);
+    border-radius: 0 0 6px 6px;
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.5),
+        inset 0 -2px 8px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+    margin-left: calc(var(--black-key-width) / -2);
+    margin-right: calc(var(--black-key-width) / -2);
+}
+
+.black-key::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%;
+    height: 50%;
+    background: linear-gradient(
+        180deg,
+        rgba(80, 80, 100, 0.5) 0%,
+        transparent 100%
+    );
+    border-radius: 3px;
+    pointer-events: none;
+}
+
+.black-key.active-depress {
+    transform: translateY(3px) scale(0.98);
+    box-shadow:
+        0 1px 5px rgba(0, 0, 0, 0.6),
+        inset 0 2px 8px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(
+        180deg,
+        var(--black-key-active) 0%,
+        rgba(255, 80, 130, 0.9) 100%
+    );
+}
+
+.black-key.active-color {
+    background: linear-gradient(
+        180deg,
+        var(--black-key-active) 0%,
+        rgba(255, 60, 100, 0.95) 100%
+    );
+    box-shadow:
+        0 4px 20px rgba(255, 100, 150, 0.6),
+        inset 0 -2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Key label (note name) */
+.key-label {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+}
+
+.black-key .key-label {
+    color: rgba(255, 255, 255, 0.5);
+    bottom: 8px;
+}
+
+/* Keyboard shortcut hint */
+.key-hint {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 9px;
+    font-weight: 700;
+    color: rgba(100, 100, 120, 0.6);
+    pointer-events: none;
+    text-transform: uppercase;
+}
+
+.black-key .key-hint {
+    color: rgba(200, 200, 220, 0.5);
+    bottom: 20px;
+}
+
+/* ========================================
+   Instructions Footer
+   ======================================== */
+.instructions-footer {
+    padding: 16px 24px;
+    text-align: center;
+    width: 100%;
+    max-width: 800px;
+}
+
+.instructions-footer p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    margin: 4px 0;
+}
+
+.instructions-footer strong {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* ========================================
+   Responsive Design
+   ======================================== */
+
+/* Portrait mode - narrow screens (mobile) */
+@media (max-width: 768px) {
+    :root {
+        --white-key-width: 45px;
+        --white-key-height: 180px;
+        --black-key-width: 28px;
+        --black-key-height: 115px;
+    }
+
+    .controls-header {
+        flex-direction: column;
+        padding: 16px 20px;
+    }
+
+    .control-group {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .glass-select {
+        min-width: 180px;
+    }
+
+    .recording-controls {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .instructions-footer {
+        display: none;
+    }
+
+    /* Show only 1 octave visible at a time */
+    .piano-wrapper {
+        max-width: calc(var(--white-key-width) * 7 + 40px);
+    }
+}
+
+/* Landscape mode - medium screens */
+@media (min-width: 769px) and (max-width: 1200px) {
+    /* Show 2 octaves visible */
+    .piano-wrapper {
+        max-width: calc(var(--white-key-width) * 14 + 40px);
+    }
+}
+
+/* Desktop - large screens */
+@media (min-width: 1201px) {
+    /* Show 2 octaves visible, but allow scroll to see more */
+    .piano-wrapper {
+        max-width: calc(var(--white-key-width) * 14 + 40px);
+    }
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+    :root {
+        --white-key-width: 38px;
+        --white-key-height: 150px;
+        --black-key-width: 24px;
+        --black-key-height: 95px;
+    }
+
+    .overlay-content {
+        padding: 40px 30px;
+    }
+
+    .overlay-content h1 {
+        font-size: 32px;
+    }
+
+    .octave-ribbon-container {
+        padding: 12px 16px;
+    }
+
+    #current-octave-display {
+        font-size: 14px;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .white-key, .black-key {
+        transition: none;
+    }
+
+    .glass-button:hover {
+        transform: none;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    :root {
+        --glass-border: rgba(255, 255, 255, 0.4);
+        --white-key: rgba(255, 255, 255, 0.95);
+        --black-key: rgba(10, 10, 15, 0.98);
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
