@@ -134,8 +134,6 @@ const state = {
 };
 
 const ui = {
-  overlay: document.getElementById("startOverlay"),
-  startButton: document.getElementById("startButton"),
   presetSelect: document.getElementById("presetSelect"),
   inputToggle: document.getElementById("inputModeToggle"),
   visualToggle: document.getElementById("visualModeToggle"),
@@ -321,13 +319,21 @@ function setPreset(name) {
   state.synthBundle = presetFactories[name]();
 }
 
+let isInitialized = false;
+
 async function initAudio() {
+  if (!isInitialized) {
+    setupRecorderTap();
+    setPreset(ui.presetSelect.value);
+    isInitialized = true;
+  }
   if (state.audioStarted) return;
-  await Tone.start();
-  setupRecorderTap();
-  setPreset(ui.presetSelect.value);
-  state.audioStarted = true;
-  ui.overlay.classList.add("hidden");
+  try {
+    await Tone.start();
+    state.audioStarted = true;
+  } catch (e) {
+    console.warn("Audio start blocked, waiting for interaction", e);
+  }
 }
 
 function setupRecorderTap() {
@@ -585,8 +591,6 @@ function bindKeyboardInput() {
 }
 
 function bindControls() {
-  ui.startButton.addEventListener("click", initAudio);
-
   ["pointerdown", "keydown"].forEach((type) => {
     window.addEventListener(type, () => {
       if (!state.audioStarted) initAudio();
@@ -630,6 +634,8 @@ function boot() {
   const resizeObserver = new ResizeObserver(() => updateViewportRules());
   resizeObserver.observe(document.body);
   window.addEventListener("resize", updateViewportRules);
+
+  initAudio();
 }
 
 boot();

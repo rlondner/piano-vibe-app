@@ -1,0 +1,239 @@
+:root {
+    --bg-gradient: linear-gradient(135deg, #1a0033 0%, #000033 100%);
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.2);
+    --glass-blur: blur(10px);
+    --accent-color: #00f2fe;
+    --record-red: #ff4b2b;
+    --key-white: rgba(255, 255, 255, 0.9);
+    --key-black: rgba(20, 20, 20, 0.9);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg-gradient);
+    height: 100vh;
+    overflow: hidden;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#start-btn {
+    padding: 20px 40px;
+    font-size: 1.5rem;
+    background: var(--glass-bg);
+    border: var(--glass-border);
+    backdrop-filter: var(--glass-blur);
+    color: white;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+#start-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.app-container {
+    width: 95vw;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.glass-header {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    padding: 15px 25px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.glass-select, .glass-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: var(--glass-border);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    backdrop-filter: var(--glass-blur);
+}
+
+.glass-select option {
+    background: #1a0033;
+    color: white;
+}
+
+.glass-btn.small {
+    font-size: 0.8rem;
+}
+
+.glass-btn.active {
+    background: var(--accent-color);
+    color: #1a0033;
+}
+
+.glass-btn.record.active {
+    background: var(--record-red);
+    color: white;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); opacity: 0.8; }
+    100% { transform: scale(1); }
+}
+
+.ribbon-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    border-radius: 12px;
+    user-select: none;
+    cursor: grab;
+}
+
+.ribbon-container:active {
+    cursor: grabbing;
+}
+
+.ribbon-content {
+    flex-grow: 1;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.ribbon-arrow {
+    font-size: 1.5rem;
+    opacity: 0.5;
+}
+
+.piano-viewport {
+    flex-grow: 1;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+}
+
+.piano-keys {
+    display: flex;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    will-change: transform;
+}
+
+.key {
+    position: relative;
+    flex-shrink: 0;
+    height: 100%;
+    border: 1px solid rgba(0,0,0,0.1);
+    transition: all 0.1s;
+    user-select: none;
+}
+
+.key.white {
+    width: calc(100vw / 7); /* Default for mobile portrait: 1 octave = 7 white keys */
+    background: var(--key-white);
+    border-radius: 0 0 8px 8px;
+    z-index: 1;
+}
+
+.key.black {
+    width: calc(100vw / 12); /* Proportional */
+    height: 60%;
+    background: var(--key-black);
+    margin-left: calc(100vw / -24);
+    margin-right: calc(100vw / -24);
+    z-index: 2;
+    border-radius: 0 0 5px 5px;
+}
+
+/* Adjust key widths based on responsive rules */
+@media (min-width: 768px), (orientation: landscape) {
+    .key.white {
+        width: calc(100vw / 14); /* 2 octaves = 14 white keys */
+    }
+    .key.black {
+        width: calc(100vw / 24);
+        margin-left: calc(100vw / -48);
+        margin-right: calc(100vw / -48);
+    }
+}
+
+/* Feedback Styles */
+.key.active-color {
+    background: var(--accent-color) !important;
+}
+
+.key.active-depress {
+    transform: translateY(10px) scaleY(0.95);
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+}
+
+.key.black.active-color {
+    background: #00b8d4 !important;
+}
+
+.toggle-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+}
+
+/* Hide ribbon and labels on very small screens if needed */
+@media (max-width: 480px) {
+    h1 { font-size: 1.2rem; }
+    .header-left { gap: 10px; }
+    .glass-header { padding: 10px; }
+}
